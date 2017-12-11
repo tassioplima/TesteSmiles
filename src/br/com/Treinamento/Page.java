@@ -1,9 +1,15 @@
 package br.com.Treinamento;
 
+import org.apache.commons.exec.ExecuteException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Page extends Navegador {
+
+	static WebDriverWait wait;
 
 	public void abrirCadastroSmiles() {
 
@@ -17,8 +23,9 @@ public class Page extends Navegador {
 
 	}
 
-	public void cancelarPropaganda() {
-		getPropaganda().click();
+	public void cancelarPropaganda() throws InterruptedException {
+		
+			getPropaganda().click();
 
 	}
 
@@ -87,7 +94,7 @@ public class Page extends Navegador {
 
 	public WebElement getGenero(String gen) {
 
-		return driver.findElement(By.xpath(".//*[@type='radio' and contains(@value,'"+gen+"')]"));
+		return driver.findElement(By.xpath(".//*[@type='radio' and contains(@value,'" + gen + "')]"));
 	}
 
 	public void clickGenero(String gen) {
@@ -101,25 +108,10 @@ public class Page extends Navegador {
 				.findElement(By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_birthDay']"));
 	}
 
-	public void setDia(String dia) {
-
-		getDia().sendKeys(dia);
-
-	}
-
-	public void clickDia() {
-		getDia().click();
-
-	}
-
 	public WebElement getMes() {
 
-		return driver.findElement(By.xpath(""));
-	}
-
-	public void setMes(String mes) {
-
-		getMes().sendKeys(mes);
+		return driver
+				.findElement(By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_birthMonth']"));
 	}
 
 	public WebElement getAno() {
@@ -128,9 +120,12 @@ public class Page extends Navegador {
 				.findElement(By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_birthYear']"));
 	}
 
-	public void setAno(String ano) {
+	public void setNascimento(String dia, String mes, String ano) {
 
+		getDia().sendKeys(dia);
+		getMes().sendKeys(mes);
 		getAno().sendKeys(ano);
+
 	}
 
 	public WebElement getDocumento() {
@@ -196,7 +191,7 @@ public class Page extends Navegador {
 		return driver.findElement(By.xpath(".//*[contains(text(),'Confirmar E-mail')]/following::input"));
 	}
 
-	public void setConfirmarEmamil(String conf) {
+	public void setConfirmarEmail(String conf) {
 
 		getConfirmarEmail().sendKeys(conf);
 	}
@@ -242,11 +237,16 @@ public class Page extends Navegador {
 
 	public WebElement getNumero() {
 
-		return driver.findElement(
-				By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_streetNumber']"));
+		return driver.findElement(By.xpath(".//input[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_streetNumber']"));
 
 	}
 
+	public WebElement getComplemento() {
+		
+		return driver
+				.findElement(By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_complement']"));
+	}
+	
 	public void setEndereco(String end, String num, String comp) {
 
 		getEndereco().sendKeys(end);
@@ -254,11 +254,6 @@ public class Page extends Navegador {
 		getComplemento().sendKeys(comp);
 	}
 
-	public WebElement getComplemento() {
-
-		return driver
-				.findElement(By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_complement']"));
-	}
 
 	public WebElement getAC() {
 
@@ -268,52 +263,56 @@ public class Page extends Navegador {
 
 	public WebElement getACSP() {
 
-		return driver.findElement(By.xpath(".//*[@id='dk_container__smilesregistermemberportlet_WAR_smilesaccountportlet_stateBrazilian']/div/ul/li[27]/a"));
+		return driver.findElement(By.xpath(
+				".//*[@id='dk_container__smilesregistermemberportlet_WAR_smilesaccountportlet_stateBrazilian']/div/ul/li[27]/a"));
 	}
-	
-	public void clickAC(){
-		
+
+	public void clickAC() {
+
 		getAC().click();
 		getACSP().click();
-		
+
 	}
 
 	public WebElement getCidade() {
 
 		return driver.findElement(By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_city']"));
 	}
-	
-	public void setCidade(String cid){
-		
+
+	public void setCidade(String cid) {
+
 		getCidade().sendKeys(cid);
 	}
 
 	public WebElement getSenha() {
 
-		return driver.findElement(By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_password']"));
+		return driver
+				.findElement(By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_password']"));
 	}
-	
-	public WebElement getConfirmaSenha(){
-		
-		return driver.findElement(By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_passwordConfirm']"));
+
+	public WebElement getConfirmaSenha() {
+
+		return driver.findElement(
+				By.xpath(".//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_passwordConfirm']"));
 	}
-	
-	public void setSenha(String senha, String confirma){
-		
+
+	public void setSenha(String senha, String confirma) {
+
 		getSenha().sendKeys(senha);
 		getConfirmaSenha().sendKeys(confirma);
-		
+
 	}
 
 	public WebElement getFinalizarCadastro() {
 
-		return driver.findElement(By.xpath("//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_saveButton']"));
+		return driver
+				.findElement(By.xpath("//*[@id='_smilesregistermemberportlet_WAR_smilesaccountportlet_saveButton']"));
 	}
-	
-	public void cliqueFinalizar(){
-		
+
+	public void cliqueFinalizar() {
+
 		getFinalizarCadastro().click();
-		
+
 	}
 
 }
